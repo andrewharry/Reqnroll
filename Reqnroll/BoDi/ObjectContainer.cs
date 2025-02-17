@@ -383,6 +383,26 @@ public class ObjectContainer : IObjectContainer
         return RegisterTypeAsInternal(implementationType, interfaceType, name);
     }
 
+    public bool TryRegisterTypeAs<TInterface>(Type implementationType, string name = null) where TInterface : class
+    {
+        Type interfaceType = typeof(TInterface);
+        return TryRegisterTypeAsInternal(implementationType, interfaceType, name);
+    }
+
+    public bool TryRegisterTypeAs<TType, TInterface>(string name = null) where TType : class, TInterface
+    {
+        Type interfaceType = typeof(TInterface);
+        Type implementationType = typeof(TType);
+        return TryRegisterTypeAsInternal(implementationType, interfaceType, name);
+    }
+
+    public bool TryRegisterTypeAs(Type implementationType, Type interfaceType, string name = null)
+    {
+        if (!IsValidTypeMapping(implementationType, interfaceType))
+            throw new InvalidOperationException($"The type mapping is not valid. The {implementationType} is not assignable to the interface {interfaceType}");
+        return TryRegisterTypeAsInternal(implementationType, interfaceType, name);
+    }
+
     private bool IsValidTypeMapping(Type implementationType, Type interfaceType)
     {
         if (interfaceType.IsAssignableFrom(implementationType))
@@ -436,6 +456,21 @@ public class ObjectContainer : IObjectContainer
             var dictKey = CreateNamedInstanceDictionaryKey(key.Type);
             _registrations.TryAdd(dictKey, new NamedInstanceDictionaryRegistration());
         }
+    }
+
+    private bool TryRegisterTypeAsInternal(Type implementationType, Type interfaceType, string name)
+    {
+        var registrationKey = new RegistrationKey(interfaceType, name);
+
+        if (_resolvedKeys.Contains(registrationKey)) { 
+            return false; 
+        }
+
+        ClearRegistrations(registrationKey);
+        var typeRegistration = new TypeRegistration(implementationType);
+        AddRegistration(registrationKey, typeRegistration);
+
+        return true;
     }
 
     private IStrategyRegistration RegisterTypeAsInternal(Type implementationType, Type interfaceType, string name)

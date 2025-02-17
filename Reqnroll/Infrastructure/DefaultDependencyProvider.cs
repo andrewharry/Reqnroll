@@ -35,7 +35,6 @@ namespace Reqnroll.Infrastructure
             container.RegisterTypeAs<ColorOutputTheme, IColorOutputTheme>();
             container.RegisterTypeAs<ColorOutputHelper, IColorOutputHelper>();
 
-            container.RegisterTypeAs<DefaultListener, ITraceListener>();
             container.RegisterTypeAs<TraceListenerQueue, ITraceListenerQueue>();
 
             container.RegisterTypeAs<ErrorProvider, IErrorProvider>();
@@ -60,6 +59,9 @@ namespace Reqnroll.Infrastructure
             container.RegisterTypeAs<StepTextAnalyzer, IStepTextAnalyzer>();
 
             PlatformHelper.RegisterPluginAssemblyLoader(container);
+
+            container.TryRegisterTypeAs<DefaultListener, ITraceListener>();
+
             container.RegisterTypeAs<RuntimePluginLoader, IRuntimePluginLoader>();
             container.RegisterTypeAs<RuntimePluginLocator, IRuntimePluginLocator>();
             container.RegisterTypeAs<RuntimePluginLocationMerger, IRuntimePluginLocationMerger>();

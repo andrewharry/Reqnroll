@@ -10,6 +10,12 @@ public interface IObjectContainer : IDisposable
     /// </summary>
     event Action<object> ObjectCreated;
 
+    public bool TryRegisterTypeAs<TInterface>(Type implementationType, string name = null) where TInterface : class;
+
+    public bool TryRegisterTypeAs<TType, TInterface>(string name = null) where TType : class, TInterface;
+
+    public bool TryRegisterTypeAs(Type implementationType, Type interfaceType, string name = null);
+
     /// <summary>
     /// Registers a type as the desired implementation type of an interface.
     /// </summary>

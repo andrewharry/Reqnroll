@@ -33,7 +33,7 @@ namespace Reqnroll.RuntimeTests.Infrastructure
             public void RegisterCustomizations(ObjectContainer container, Reqnroll.Configuration.ReqnrollConfiguration reqnrollConfiguration)
             {
                 if (reqnrollConfiguration.StopAtFirstError)
-                    container.RegisterTypeAs<DefaultListener, ITraceListener>();
+                    container.TryRegisterTypeAs<DefaultListener, ITraceListener>();
             }
 
             public void RegisterConfigurationDefaults(Reqnroll.Configuration.ReqnrollConfiguration reqnrollConfiguration)
@@ -45,7 +45,7 @@ namespace Reqnroll.RuntimeTests.Infrastructure
                 runtimePluginEvents.CustomizeGlobalDependencies += (sender, args) =>
                                                                    {
                                                                        if (args.ReqnrollConfiguration.StopAtFirstError)
-                                                                           args.ObjectContainer.RegisterTypeAs<DefaultListener, ITraceListener>();
+                                                                           args.ObjectContainer.TryRegisterTypeAs<DefaultListener, ITraceListener>();
                                                                    };
             }
         }

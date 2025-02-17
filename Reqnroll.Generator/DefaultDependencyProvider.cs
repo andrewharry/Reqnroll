@@ -28,7 +28,7 @@ namespace Reqnroll.Generator
 
             PlatformHelper.RegisterPluginAssemblyLoader(container);
             container.RegisterTypeAs<GeneratorPluginLoader, IGeneratorPluginLoader>();
-            container.RegisterTypeAs<DefaultListener, ITraceListener>();
+            container.TryRegisterTypeAs<DefaultListener, ITraceListener>();
 
             container.RegisterTypeAs<UnitTestFeatureGenerator, UnitTestFeatureGenerator>();
             container.RegisterTypeAs<FeatureGeneratorRegistry, IFeatureGeneratorRegistry>();
